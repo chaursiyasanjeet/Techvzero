@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-const backendURL = "http://localhost:3000";
+const backendURL = "https://techvzero.onrender.com";
 
 export const getNotes = async (): Promise<any> => {
   try {
