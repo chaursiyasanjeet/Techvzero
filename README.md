@@ -51,8 +51,6 @@ Start the server
 
 To run this project, you will need to add the following environment variables to your .env file
 
-##### Frontend Requirement
-`VITE_REACT_APP_BACKEND_URL`
 
 ##### Server Requirement
 
