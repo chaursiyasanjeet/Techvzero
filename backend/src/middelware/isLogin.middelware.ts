@@ -11,7 +11,6 @@ import * as jwt from 'jsonwebtoken';
 export class IsLoginMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     const jwtToken = req.headers['token'];
-
     if (!jwtToken) {
       throw new BadRequestException('Token Not Provided');
     }

@@ -4,6 +4,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from "../../assets/logo.jpg";
+import { useAuthContext } from "../../Context/Context";
+import { register } from "../../apis/Auth";
 
 interface User {
   name: string;
@@ -13,7 +15,12 @@ interface User {
 }
 
 const Singup: FC = () => {
+  const { isLoggedIn, setLoggedIn } = useAuthContext();
   const navigate = useRouter();
+  if (isLoggedIn) {
+    navigate.push("./");
+  }
+
   const [user, setUser] = useState<User>({
     name: "",
     mobile: "",
@@ -64,21 +71,21 @@ const Singup: FC = () => {
       user.password
     );
     if (validate) {
-      //   const result = await register(
-      //     user.name,
-      //     user.email,
-      //     user.mobile,
-      //     user.password
-      //   );
-      //   if (result.status === "SUCCESS") {
-      //     toast.success("Registered Successfully");
-      //     setTimeout(() => {
-      //      navigate.push("./login");
-      //     }, 2000);
-      //   } else {
-      //     console.log(result);
-      //     toast.error(result.message);
-      //   }
+      const result = await register(
+        user.name,
+        user.email,
+        user.mobile,
+        user.password
+      );
+      if (result.status === "SUCCESS") {
+        toast.success("Registered Successfully");
+        setTimeout(() => {
+          navigate.push("./login");
+        }, 2000);
+      } else {
+        console.log(result);
+        toast.error(result.message);
+      }
     }
   };
 

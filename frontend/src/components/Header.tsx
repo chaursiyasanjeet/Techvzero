@@ -4,10 +4,12 @@ import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from "../assets/logo.jpg";
+import { useAuthContext } from "../Context/Context";
 
 const Header: FC = () => {
+  const { isLoggedIn, setLoggedIn } = useAuthContext();
   const navigate = useRouter();
-  const login: boolean = true;
+  const login: boolean = isLoggedIn;
   return (
     <>
       <div className="w-full h-[10vh] flex justify-between items-center px-5 bg-violet-300">
@@ -20,7 +22,7 @@ const Header: FC = () => {
           <h1 className="text-2xl font-bold">Spark Note</h1>
         </div>
 
-        {login ? (
+        {!login ? (
           <div className="flex gap-5 md:gap-10">
             <button
               className="h-80%  w-max px-5 rounded-md font-semibold bg-violet-500 hover:bg-violet-300"
@@ -44,6 +46,7 @@ const Header: FC = () => {
           <button
             className="h-80% bg-red-700 w-max px-5 py-1 rounded-md font-semibold"
             onClick={() => {
+              localStorage.removeItem("noteJWT"), setLoggedIn(false);
               toast.success("Logout Successfull");
             }}
           >

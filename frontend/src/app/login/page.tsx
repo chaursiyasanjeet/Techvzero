@@ -4,6 +4,8 @@ import { ToastContainer, toast } from "react-toastify";
 import Image from "next/image";
 import logo from "../../assets/logo.jpg";
 import { useRouter } from "next/navigation";
+import { login } from "@/apis/Auth";
+import { useAuthContext } from "../../Context/Context";
 
 interface User {
   email: string;
@@ -11,7 +13,12 @@ interface User {
 }
 
 const Login: FC = () => {
+  const { isLoggedIn, setLoggedIn } = useAuthContext();
   const navigate = useRouter();
+
+  if (isLoggedIn) {
+    navigate.push("./");
+  }
   const [user, setUser] = useState<User>({
     email: "",
     password: "",
@@ -42,17 +49,18 @@ const Login: FC = () => {
     e.preventDefault();
     const validate: boolean = validateForm(user.email, user.password);
     if (validate) {
-      // const result = await login(user.email, user.password);
-      // if (result.status === "SUCCESS") {
-      //   localStorage.setItem("invoiceGenrator", result.jwtToken);
-      //   toast.success("Login Successfully");
-      //   setTimeout(() => {
-      //    navigate.push("./")
-      //   }, 2000);
-      // } else {
-      //   console.log(result);
-      //   toast.error(result.message);
-      // }
+      const result = await login(user.email, user.password);
+      if (result.status === "SUCCESS") {
+        localStorage.setItem("noteJWT", result.token);
+        toast.success("Login Successfully");
+
+        setTimeout(() => {
+          setLoggedIn(true);
+          navigate.push("./");
+        }, 2000);
+      } else {
+        toast.error(result.message);
+      }
     }
   };
   return (

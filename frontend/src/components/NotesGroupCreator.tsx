@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef, useState, ChangeEvent, FormEvent } from "react";
+import { getNotes, editNotes } from "@/apis/User";
 
 interface NotesGroupCreatorProps {
   setPopupChild: any;
@@ -10,7 +11,6 @@ const NotesGroupCreator: React.FC<NotesGroupCreatorProps> = ({
   setPopupChild,
   popup,
 }) => {
-  console.log(setPopupChild);
   const refOne = useRef<HTMLFormElement>(null);
   const handleOutsideClick = (e: MouseEvent) => {
     if (refOne.current && !refOne.current.contains(e.target as Node)) {
@@ -29,7 +29,7 @@ const NotesGroupCreator: React.FC<NotesGroupCreatorProps> = ({
     setGroupName(e.target.value);
   };
 
-  const handleSumbit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSumbit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const newGroup = {
@@ -37,12 +37,16 @@ const NotesGroupCreator: React.FC<NotesGroupCreatorProps> = ({
     };
 
     setGroupName("");
+    const result = await getNotes();
+    const newNote = [...result.notes, { groupName: groupName, note: "" }];
+    const result2 = await editNotes(newNote);
     if (e.target instanceof HTMLFormElement) {
       setPopupChild(false);
     }
     document.removeEventListener("click", handleOutsideClick, true);
   };
 
+  const handleNoteCreate = async () => {};
   return (
     <>
       <form

@@ -17,7 +17,6 @@ export class UserService {
     try {
       const { user } = req.userExist;
 
-      console.log(user._id);
       const userData = await this.usermodel.findById(user._id);
 
       return { status: 'SUCCESS', notes: userData['notes'] };
@@ -26,21 +25,23 @@ export class UserService {
     }
   }
 
-  async editNotes(req, notesData) {
+  async editNotes(req, notesData: any[]) {
     try {
       const { user } = req.userExist;
 
       if (!notesData) {
         return { status: 'FAILED', message: 'Empty Fields' };
       }
+
       const updateNote = await this.usermodel.findOneAndUpdate(
         { _id: user._id },
         notesData,
         { new: true },
       );
 
-      return { updateNote };
+      return { status: 'SUCESS', updateNote };
     } catch (error) {
+      console.log(error);
       throw new ServiceUnavailableException();
     }
   }
