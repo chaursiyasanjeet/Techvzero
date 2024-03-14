@@ -28,7 +28,7 @@ const HomePageDesktop: FC = () => {
             <Sidebar setNoteChild={getNoteData} />
           </div>
           <div className="mt-10 md:mt-0">
-            <NotesScreen noteData={note} />
+            <NotesScreen noteData={note} setView={() => {}} />
           </div>
         </div>
       ) : (
